@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    a {
+        text-decoration: none;
+        color: #fff;
+    }
+
+    button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: transparent;
+        border: 1px solid #fff;
+        padding: 10px;
+        border-radius: 4px;
+    }
+
+    body {
+        height: 100vh;
+        width: 100%;
+        background-color: #000;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .image-track>.image {
+        width: 40vmin;
+        height: 56vmin;
+        object-fit: cover;
+        object-position: 100% 50%;
+    }
+
+    .image-track {
+        display: flex;
+        gap: 4vmin;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(0%, -50%);
+    }
+
+    .loader,
+    .loader:before,
+    .loader:after {
+        background: #ffffff;
+        -webkit-animation: load1 1s infinite ease-in-out;
+        animation: load1 1s infinite ease-in-out;
+        width: 1em;
+        height: 4em;
+    }
+
+    .loader {
+        color: #ffffff;
+        text-indent: -9999em;
+        margin: 88px auto;
+        position: relative;
+        font-size: 11px;
+        -webkit-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-animation-delay: -0.16s;
+        animation-delay: -0.16s;
+    }
+
+    .loader:before,
+    .loader:after {
+        position: absolute;
+        top: 0;
+        content: '';
+    }
+
+    .loader:before {
+        left: -1.5em;
+        -webkit-animation-delay: -0.32s;
+        animation-delay: -0.32s;
+    }
+
+    .loader:after {
+        left: 1.5em;
+    }
+
+    @-webkit-keyframes load1 {
+
+        0%,
+        80%,
+        100% {
+            box-shadow: 0 0;
+            height: 4em;
+        }
+
+        40% {
+            box-shadow: 0 -2em;
+            height: 5em;
+        }
+    }
+
+    @keyframes load1 {
+
+        0%,
+        80%,
+        100% {
+            box-shadow: 0 0;
+            height: 4em;
+        }
+
+        40% {
+            box-shadow: 0 -2em;
+            height: 5em;
+        }
+    }
+    .hidden{
+        display: none;
+    }
+</style>
+
+<body>
+    <button><a href="./pages/upload.html">Upload</a></button>
+    <div class="image-track" data-mouse-down-at="0" data-prev-percentage="0">
+        <!-- <img class="image"
+            src="https://images.unsplash.com/photo-1713453054079-7231d9c7d521?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4fHx8ZW58MHx8fHx8"
+            alt="" draggable="false">
+        <img class="image"
+            src="https://images.unsplash.com/photo-1713453054079-7231d9c7d521?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4fHx8ZW58MHx8fHx8"
+            alt="" draggable="false">
+        <img class="image"
+            src="https://images.unsplash.com/photo-1713453054079-7231d9c7d521?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4fHx8ZW58MHx8fHx8"
+            alt="" draggable="false">
+        <img class="image"
+            src="https://images.unsplash.com/photo-1713453054079-7231d9c7d521?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4fHx8ZW58MHx8fHx8"
+            alt="" draggable="false">
+        <img class="image"
+            src="https://images.unsplash.com/photo-1713453054079-7231d9c7d521?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4fHx8ZW58MHx8fHx8"
+            alt="" draggable="false">
+        <img class="image"
+            src="https://images.unsplash.com/photo-1713453054079-7231d9c7d521?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4fHx8ZW58MHx8fHx8"
+            alt="" draggable="false"> -->
+
+
+
+    </div>
+    <script>
+        let track = document.querySelector('.image-track')
+        window.onmousedown = (e) => {
+            track.dataset.mouseDownAt = e.clientX;
+            console.log('This is the mouse down movement', track.dataset.mouseDownAt)
+        }
+        window.onmousemove = (e) => {
+            //If the user has not started pressing the mouse do not move it
+            if (track.dataset.mouseDownAt == '0') return
+
+            let delta = parseFloat(track.dataset.mouseDownAt) - e.clientX;
+            console.log("The difference", delta)
+
+            let maxDelta = window.innerWidth / 2;
+            let deltaPercent = (delta / maxDelta) * -100,
+                nextPercentageUnconstrained = parseFloat(track.dataset.prevPercentage) + deltaPercent;
+            nextPercentage = Math.max(Math.min(nextPercentageUnconstrained, 0), -100)
+            track.dataset.percentage = nextPercentage;
+
+            track.animate(
+                { transform: `translate(${nextPercentage}%,-50%)` },
+                { duration: 1200, fill: "forwards" }
+            )
+
+
+            for (const image of track.getElementsByClassName('image')) {
+                image.animate(
+                    { objectPosition: `${nextPercentage + 100}% 50%` },
+                    { duration: 1200, fill: "forwards" }
+                )
+                console.log('This is the object position', image.style.objectPosition)
+            }
+        }
+        window.onmouseup = (e) => {
+            track.dataset.mouseDownAt = '0';
+            track.dataset.prevPercentage = track.dataset.percentage
+        }
+
+        window.onload = () => {
+            let body = document.querySelector('body');
+            let div = document.createElement('div');
+            div.classList.add('loader');
+            body.append(div);
+            fetch('/api/upload',)
+                .then((response) => {
+                    response.json()
+                        .then(data => {
+                           let loader =  document.querySelector('.loader')
+                           loader.style.display = 'none'
+                            console.log(data.blobs)
+                            for (let image of data.blobs) {
+                                let added = document.createElement('img')
+                                added.classList.add('image');
+                                added.src = image.url;
+                                track.append(added)
+                            }
+                        })
+                })
+        }
+
+    </script>
+</body>
+
+</html>
